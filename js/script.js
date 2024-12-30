@@ -119,7 +119,7 @@ async function displayAlbums() {
 
 async function main() {
     // Get the list of all the songs
-    await getSongs("songs/emotional");
+    await getSongs("https://github.com/anish877/clone/tree/4f241510d0a95bf20bc278078dffe91547de82b6/songs/emotional");
     playMusic(songs[0], true);
 
     // Display all the albums on the page
