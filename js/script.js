@@ -17,12 +17,17 @@ function secondsToMinutesSeconds(seconds) {
 }
 
 async function getSongs(folder) {
-    currFolder = folder;
-    let a = await fetch(`/${folder}/`);
+    try {
+        currFolder = folder;
+        console.log(folder)
+    let a = await fetch(`./${folder}`);
     let response = await a.text();
+    console.log(response)
     let div = document.createElement("div");
     div.innerHTML = response;
+    document.getElementById("contd").appendChild(div)
     let as = div.getElementsByTagName("a");
+    console.log(as)
     songs = [];
     for (let index = 0; index < as.length; index++) {
         const element = as[index];
@@ -30,7 +35,7 @@ async function getSongs(folder) {
             songs.push(element.href.split(`/${folder}/`)[1]);
         }
     }
-
+    console.log(songs)
     // Show all the songs in the playlist
     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
     songUL.innerHTML = "";
@@ -54,6 +59,10 @@ async function getSongs(folder) {
     });
 
     return songs;
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
 const playMusic = (track, pause = false) => {
@@ -102,7 +111,7 @@ async function displayAlbums() {
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
             console.log("Fetching Songs");
-            songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`);
+            songs = await getSongs(`/songs/${item.currentTarget.dataset.folder}`);
             playMusic(songs[0]);
         });
     });
@@ -110,7 +119,7 @@ async function displayAlbums() {
 
 async function main() {
     // Get the list of all the songs
-    await getSongs("songs/ncs");
+    await getSongs("songs/emotional");
     playMusic(songs[0], true);
 
     // Display all the albums on the page
